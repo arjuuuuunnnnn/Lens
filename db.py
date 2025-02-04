@@ -20,7 +20,7 @@ ollama_base_url = os.getenv("OLLAMA_BASE_URL")
 embedding_model_name = os.getenv("EMBEDDING_MODEL")
 llm_name = os.getenv("LLM")
 # Remapping for Langchain Neo4j integration
-os.environ["NEO4J_URL"] = url
+# os.environ["NEO4J_URL"] = url
 
 logger = get_logger(__name__)
 
