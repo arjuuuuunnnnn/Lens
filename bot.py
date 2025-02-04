@@ -6,7 +6,6 @@ from streamlit.logger import get_logger
 from langchain.callbacks.base import BaseCallbackHandler
 from dotenv import load_dotenv
 from chains import (
-    load_llm,
     configure_llm_only_chain,
     get_qa_rag_chain
 )
@@ -31,26 +30,14 @@ load_dotenv(".env")
 url = "http://localhost:7687"
 username = "neo4j"
 password = "password"
-ollama_base_url = os.getenv("OLLAMA_BASE_URL")
-embedding_model_name = os.getenv("EMBEDDING_MODEL")
-llm_name = os.getenv("LLM")
 # Remapping for Langchain Neo4j integration
 # os.environ["NEO4J_URL"] = url
 
 logger = get_logger(__name__)
 
 @st.cache_resource
-def initLLM():
-    # create llm
-    llm = load_llm(llm_name, logger=logger, config={"ollama_base_url": ollama_base_url})
-
-    return llm
-
-llm = initLLM()
-
-@st.cache_resource
 def get_llm_chain():
-    chain = configure_llm_only_chain(llm)
+    chain = configure_llm_only_chain()
     return chain
 
 @st.cache_resource
@@ -60,12 +47,12 @@ def process_directory(language, directory, count) -> (str, Neo4jVector):
 
 @st.cache_resource
 def get_qa_chain(_vectorstore, count):
-    qa = get_qa_rag_chain(_vectorstore, llm)
+    qa = get_qa_rag_chain(_vectorstore)
     return qa
 
 @st.cache_resource
 def get_agent(_qa, count):
-    qa = get_agent_executor(_qa, llm)
+    qa = get_agent_executor(_qa)
     return qa
 
 class StreamHandler(BaseCallbackHandler):
@@ -215,6 +202,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-

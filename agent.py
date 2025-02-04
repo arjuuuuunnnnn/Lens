@@ -6,7 +6,6 @@ from typing import List, Union
 from langchain.schema import AgentAction, AgentFinish, HumanMessage
 import re
 from langchain.prompts import BaseChatPromptTemplate
-from langchain.chains import LLMMathChain
 
 
 # Set up the base template
@@ -87,18 +86,11 @@ class CustomOutputParser(AgentOutputParser):
         return AgentAction(tool=action, tool_input=action_input.strip(" ").strip('"'), log=llm_output)
 
 def get_agent_executor(_qa, llm):
-    # Create agent executor and use qa and math as tools
-    llm_math_chain = LLMMathChain.from_llm(llm=llm)
     tools = [
         Tool.from_function(
             name = "Code",
             func=_qa.run,
             description="useful for when you need to answer questions about code"
-        ),
-        Tool.from_function(
-            func=llm_math_chain.run,
-            name="Calculator",
-            description="useful for when you need to answer questions about math"
         )
     ]
     
