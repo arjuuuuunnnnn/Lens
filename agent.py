@@ -130,17 +130,4 @@ def get_agent_executor(_qa, llm):
         max_iterations=2,
     )
 
-    # agent_executor = initialize_agent(
-    #     tools,
-    #     llm,
-    #     agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
-    #     verbose=True,
-    #     handle_parsing_errors=False,
-    #     agent_kwargs={
-    #         'output_parser': output_parser
-    #     },
-    #     memory=memory,
-    #     max_iterations=2,
-    # )
-
     return agent_executor
